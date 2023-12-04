@@ -1,0 +1,28 @@
+git clone  https://git.yoctoproject.org/git/poky                    // pwd ; ~/Desktop/Embedded
+cd poky
+git checkout kirkstone-4.0.5
+git clone https://github.com/STMicroelectronics/meta-st-stm32mp.git 
+cd meta-st-stm32mp
+git checkout kirkstone
+cd ..
+git clone https://github.com/openembedded/meta-openembedded.git
+cd meta-openembedded
+git checkout kirkstone
+cd ..
+source poky/oe-init-build-env build                                   // pwd ; ~/Desktop/Embedded/build
+bitbake-layers show-layers                                            // show layers 
+ls  ../poky/meta-st-stm32mp/conf/machine/                             // stm32mp15-eval.conf  stm32mp1.conf ...
+vi conf/local.conf                                                    // add   MACHINE ?= "stm32mp1" and :wq
+bitbake-layers add-layer ../poky/meta-openembedded/meta-oe/           // order is important
+bitbake-layers add-layer ../poky/meta-openembedded/meta-python/       // order is important
+bitbake-layers add-layer ../poky/meta-openembedded/meta-networking/
+bitbake-layers add-layer ../poky/meta-openembedded/meta-multimedia/
+bitbake-layers add-layer ../poky/meta-st-stm32mp/                     // order is important - should be last one
+bitbake-layers show-layers  
+git config --global user.email "xxxxxx@xxxx.com"
+git config --global user.name "xxxxxyyyyyy"
+bitbake core-image-minimal
+// stm32mp1 mpu sdk 
+./create_sdcard_from_flashlayout.sh ../flashlayout_core-image-minimal/trusted/FlashLayout_sdcard_stm32mp157f-dk2-trusted.tsv 
+sudo umount /dev/sdb
+sudo dd if=../FlashLayout_sdcard_stm32mp157f-dk2-trusted.raw of=/dev/sdb bs=8M conv=fdatasync
