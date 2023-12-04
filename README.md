@@ -6,7 +6,6 @@
 
 The STM32MP157F-dk2 development kit is a powerful platform for embedded systems development. By harnessing the power of Linux, you can unlock a world of possibilities for your embedded applications. This guide will walk you through the process of building Linux for STM32MP157f-dk2 and preparing an SD card for seamless operation.
 
-[Image of Poky Repository Screenshot]
 
 ## Prerequisites
 
